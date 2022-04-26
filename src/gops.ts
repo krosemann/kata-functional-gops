@@ -8,9 +8,10 @@ export class GopsGame {
   private revealedCards: Card[] = []
 
   constructor(
-    private readonly scoreCards = new Cards(),
-    private readonly player1 = new RandomPlayer(),
-    private readonly player2 = new EqualPlayer(),
+    denominations: string[],
+    private readonly scoreCards = new Cards(denominations),
+    private readonly player1 = new RandomPlayer(denominations),
+    private readonly player2 = new EqualPlayer(denominations),
   ) {
   }
 
@@ -59,7 +60,7 @@ export class GopsGame {
   }
 
   private claimRevealedCardsValue(): number {
-    const value = this.revealedCards.map(c => c.value()).reduce((c1, c2) => c1 + c2, 0)
+    const value = this.revealedCards.map(c => c.value).reduce((c1, c2) => c1 + c2, 0)
     this.revealedCards = []
     return value
   }

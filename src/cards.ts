@@ -2,8 +2,8 @@ export class Cards {
 
   private readonly cards: Card[]
 
-  constructor() {
-    this.cards = Card.denominations.map(d => new Card(d))
+  constructor(denominations: string[]) {
+    this.cards = denominations.map((d, index) => new Card(d, index+1))
   }
 
   popRandomCard(): Card {
@@ -28,20 +28,10 @@ export class Cards {
 }
 
 export class Card {
-
-  static readonly denominations: string[] = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
-
-  constructor(readonly denomination: string) {
-    if (!Card.denominations.includes(denomination)) {
-      throw `not allowed ${denomination}`
-    }
+  constructor(readonly denomination: string, readonly value: number) {
   }
 
   isHigherRankedThan(other: Card): boolean {
-    return this.value() > other.value()
-  }
-
-  value(): number {
-    return Card.denominations.indexOf(this.denomination) + 1
+    return this.value > other.value
   }
 }

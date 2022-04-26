@@ -2,8 +2,13 @@ import { Card, Cards } from './cards'
 
 export abstract class Player {
 
-  protected readonly cards = new Cards()
   private score = 0
+
+  constructor(
+    denominations: string[],
+    protected readonly cards: Cards = new Cards(denominations)
+  ) {
+  }
 
   scorePoint(value: number) {
     this.score += value
