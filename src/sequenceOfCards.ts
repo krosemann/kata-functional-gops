@@ -6,16 +6,16 @@ export class SequenceOfCards {
     this.cards = [...sequence]
   }
 
-  nextCard(): Card {
+  get currentCard(): Card {
     if(this.cards.length === 0) throw new Error('sequence has no cards left')
     return this.cards[0] as Card
   }
 
-  afterNextCardPlayed() {
+  currentCardPlayed() {
     return new SequenceOfCards(this.cards.filter((_, index) => index !== 0))
   }
 
-  hasNextCard(): boolean {
+  get hasNextCard(): boolean {
     return this.cards.length > 1
   }
 }

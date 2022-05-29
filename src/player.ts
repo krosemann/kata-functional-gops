@@ -5,11 +5,11 @@ export class Player {
   constructor(readonly score: number, private readonly cards: SequenceOfCards) {
   }
 
-  nextCard(): Card {
-    return this.cards.nextCard()
+  get currentCard(): Card {
+    return this.cards.currentCard
   }
 
-  onTurnScored(newScore: number): Player {
-    return new Player(newScore, this.cards.afterNextCardPlayed())
+  turnScored(newScore: number): Player {
+    return new Player(newScore, this.cards.currentCardPlayed())
   }
 }

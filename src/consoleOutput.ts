@@ -8,7 +8,7 @@ export function outputTurns(turns: Turns) {
 function outputTurn(turn: Turn) {
   console.log(`Turn ${turn.turnNumber} with bounty:`, turn.currentCard)
   console.log(`With cards carried over from previous turns:`, turn.revealedCards)
-  console.log('Player\'s bet:', turn.player1.nextCard(), 'vs', turn.player2.nextCard())
+  console.log('Player\'s bet:', turn.player1.currentCard, 'vs', turn.player2.currentCard)
   console.log(`Scores: ${(turn.result.player1Score)} vs ${(turn.result.player2Score)}`)
   console.log()
 }

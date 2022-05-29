@@ -30,11 +30,11 @@ export class Turn {
   }
 
   get hasNextTurn(): boolean {
-    return this.scoreCards.hasNextCard()
+    return this.scoreCards.hasNextCard
   }
 
   get currentCard(): Card {
-    return this.scoreCards.nextCard()
+    return this.scoreCards.currentCard
   }
 
   get score(): number {
@@ -53,10 +53,10 @@ export class Turn {
   nextTurn(): Turn {
     return new Turn(
       this.turnNumber + 1,
-      this.scoreCards.afterNextCardPlayed(),
+      this.scoreCards.currentCardPlayed(),
       this.result.outcome === "DRAW" ? [...this.revealedCards, this.currentCard] : [],
-      this.player1.onTurnScored(this.result.player1Score),
-      this.player2.onTurnScored(this.result.player2Score)
+      this.player1.turnScored(this.result.player1Score),
+      this.player2.turnScored(this.result.player2Score)
     )
   }
 }
@@ -70,9 +70,9 @@ class TurnResult {
   }
 
   get outcome(): 'PLAYER_1_WON' | 'PLAYER_2_WON' | 'DRAW' {
-    return this.player1.nextCard().isHigherRankedThan(this.player2.nextCard())
+    return this.player1.currentCard.isHigherRankedThan(this.player2.currentCard)
       ? 'PLAYER_1_WON'
-      : this.player2.nextCard().isHigherRankedThan(this.player1.nextCard())
+      : this.player2.currentCard.isHigherRankedThan(this.player1.currentCard)
         ? "PLAYER_2_WON"
         : 'DRAW'
   }
