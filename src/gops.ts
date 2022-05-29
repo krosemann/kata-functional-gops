@@ -13,7 +13,7 @@ export class GopsGame {
     player2: Player,
   ) {
     this.turn = new Turn(
-      0,
+      1,
       scoreCards,
       [],
       player1,
@@ -46,6 +46,6 @@ export class GopsGame {
 
     console.assert(this.turn.revealedCards.length === 0, 'no more revealed cards')
 
-    console.assert(this.turn.player1.score + this.turn.player2.score === 91, 'all score cards add up to 91')
+    console.assert(this.turn.result.player1Score + this.turn.result.player2Score === 91, 'all score cards add up to 91')
   }
 }

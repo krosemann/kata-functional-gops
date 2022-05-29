@@ -9,7 +9,7 @@ export class Player {
     return this.cards.nextCard()
   }
 
-  onTurnScored(scoredPoints: number): Player {
-    return new Player(this.score + scoredPoints, this.cards.afterNextCardPlayed())
+  onTurnScored(newScore: number): Player {
+    return new Player(newScore, this.cards.afterNextCardPlayed())
   }
 }
