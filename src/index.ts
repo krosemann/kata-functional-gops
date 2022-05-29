@@ -1,6 +1,6 @@
 import { GopsGame } from './gops'
 import { Card } from "./sequenceOfCards";
-import { Player } from "./players";
+import { Player } from "./player";
 import { randomSequenceOfCards } from "./randomSequenceOfCards";
 
 const setOfCards: Card[] = [
