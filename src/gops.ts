@@ -8,9 +8,9 @@ export class GopsGame {
   private revealedCards: Card[] = []
 
   constructor(
-    private readonly scoreCards: SequenceOfCards,
-    private readonly player1: Player,
-    private readonly player2: Player,
+    private scoreCards: SequenceOfCards,
+    private player1: Player,
+    private player2: Player,
   ) {
   }
 
@@ -20,9 +20,7 @@ export class GopsGame {
       this.showPlayerScores()
     }
 
-    const score1 = this.player1.currentScore()
-    const score2 = this.player2.currentScore()
-    if (score1 > score2) {
+    if (this.player1.score > this.player2.score) {
       console.log('Player 1 wins!')
     } else {
       console.log('Player 2 wins!')
@@ -31,31 +29,33 @@ export class GopsGame {
     this.assertValidEndOfGame()
   }
 
-  private showPlayerScores() {
-    const score1 = this.player1.currentScore()
-    const score2 = this.player2.currentScore()
-    console.log(`Scores: ${score1} vs ${score2}`)
-    console.log()
-  }
-
   private playTurn() {
     this.turn++
 
-    const scoreCard = this.scoreCards.popRandomCard()
+    const scoreCard = this.scoreCards.nextCard()
+    this.scoreCards = this.scoreCards.afterNextCardPlayed()
     this.revealedCards.unshift(scoreCard)
 
     console.log(`Turn ${this.turn} with bounty:`, scoreCard)
 
-    const card1 = this.player1.playCard(scoreCard)
-    const card2 = this.player2.playCard(scoreCard)
+    const card1 = this.player1.nextCard()
+    const card2 = this.player2.nextCard()
 
     console.log('Player\'s bet:', card1, 'vs', card2)
 
+    this.player1 = this.player1.afterNextCardPlayed()
+    this.player2 = this.player2.afterNextCardPlayed()
+
     if (card1.isHigherRankedThan(card2)) {
-      this.player1.scorePoint(this.claimRevealedCardsValue())
+      this.player1 = this.player1.withScoredPoints(this.claimRevealedCardsValue())
     } else if (card2.isHigherRankedThan(card1)) {
-      this.player2.scorePoint(this.claimRevealedCardsValue())
+      this.player2 = this.player2.withScoredPoints(this.claimRevealedCardsValue())
     } // tie leaves the scorecard the table for the next turn
+  }
+
+  private showPlayerScores() {
+    console.log(`Scores: ${(this.player1.score)} vs ${(this.player2.score)}`)
+    console.log()
   }
 
   private claimRevealedCardsValue(): number {
@@ -69,8 +69,6 @@ export class GopsGame {
 
     console.assert(this.revealedCards.length === 0, 'no more revealed cards')
 
-    const score1 = this.player1.currentScore()
-    const score2 = this.player2.currentScore()
-    console.assert(score1 + score2 === 91, 'all score cards add up to 91')
+    console.assert(this.player1.score + this.player2.score === 91, 'all score cards add up to 91')
   }
 }

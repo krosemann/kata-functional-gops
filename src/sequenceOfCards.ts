@@ -2,24 +2,17 @@ export class SequenceOfCards {
 
   private readonly cards: Card[]
 
-  constructor(setOfCards: Card[]) {
-    this.cards = [...setOfCards]
+  constructor(sequence: Card[]) {
+    this.cards = [...sequence]
   }
 
-  popRandomCard(): Card {
-    if (!this.hasCards()) throw 'deck of cards is empty'
-
-    const randomIndex = Math.floor(Math.random() * this.cards.length)
-    const card = this.cards[randomIndex]
-    this.cards.splice(randomIndex, 1)
-
-    // @ts-ignore checked by this.hasCards()
-    return card
+  nextCard(): Card {
+    if(!this.hasCards()) throw new Error('sequence has no cards left')
+    return this.cards[0] as Card
   }
 
-  removeCard(card: Card) {
-    const index = this.cards.findIndex(c => c.denomination === card.denomination)
-    if (index >= 0) this.cards.splice(index, 1)
+  afterNextCardPlayed() {
+    return new SequenceOfCards(this.cards.filter((_, index) => index !== 0))
   }
 
   hasCards(): boolean {

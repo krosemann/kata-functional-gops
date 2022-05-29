@@ -1,6 +1,6 @@
-import { Card } from "./sequenceOfCards";
+import { Card, SequenceOfCards } from "./sequenceOfCards";
 
-export function randomSequenceOfCards(cards: Card[]) {
+export function randomSequenceOfCards(cards: Card[]): SequenceOfCards {
   let currentIndex = cards.length;
   const result = [...cards]
 
@@ -15,5 +15,5 @@ export function randomSequenceOfCards(cards: Card[]) {
     [result[currentIndex], result[randomIndex]] = [result[randomIndex] as Card, result[currentIndex] as Card];
   }
 
-  return result;
+  return new SequenceOfCards(result);
 }

@@ -1,34 +1,19 @@
 import { Card, SequenceOfCards } from './sequenceOfCards'
 
-export abstract class Player {
+export class Player {
 
-  private score = 0
-
-  constructor(protected readonly cards: SequenceOfCards) {
+  constructor(readonly score: number, private readonly cards: SequenceOfCards) {
   }
 
-  scorePoint(value: number) {
-    this.score += value
+  withScoredPoints(value: number): Player {
+    return new Player(this.score + value, this.cards)
   }
 
-  currentScore(): number {
-    return this.score
+  nextCard(): Card {
+    return this.cards.nextCard()
   }
 
-  abstract playCard(scoreCard: Card): Card
-}
-
-export class RandomPlayer extends Player {
-
-  playCard(_: Card): Card {
-    return this.cards.popRandomCard()
-  }
-}
-
-export class EqualPlayer extends Player {
-
-  playCard(scoreCard: Card): Card {
-    this.cards.removeCard(scoreCard)
-    return scoreCard
+  afterNextCardPlayed(): Player {
+    return new Player(this.score, this.cards.afterNextCardPlayed())
   }
 }
