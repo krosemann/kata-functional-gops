@@ -14,8 +14,10 @@ export class GopsGame {
   ) {
     this.turn = new Turn(
       0,
+      scoreCards,
       [],
-      { dealer: scoreCards, player1: player1, player2: player2 }
+      player1,
+      player2
     )
   }
 

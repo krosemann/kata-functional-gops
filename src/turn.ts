@@ -1,22 +1,14 @@
 import { Card, SequenceOfCards } from "./sequenceOfCards";
 import { Player } from "./player";
 
-interface Hands {
-  readonly dealer: SequenceOfCards
-  readonly player1: Player
-  readonly player2: Player
-}
-
 export class Turn {
 
-  readonly scoreCards: SequenceOfCards
-  readonly player1: Player
-  readonly player2: Player
-
-  constructor(readonly turnNumber: number, readonly revealedCards: Card[], hands: Hands) {
-    this.scoreCards = hands.dealer
-    this.player1 = hands.player1
-    this.player2 = hands.player2
+  constructor(
+    readonly turnNumber: number,
+    readonly scoreCards: SequenceOfCards,
+    readonly revealedCards: Card[],
+    readonly player1: Player,
+    readonly player2: Player) {
   }
 
   get hasNextTurn(): boolean {
@@ -51,12 +43,10 @@ export class Turn {
   nextTurn(): Turn {
     return new Turn(
       this.turnNumber + 1,
+      this.scoreCards.afterNextCardPlayed(),
       this.result.outcome === "DRAW" ? [...this.revealedCards, this.currentCard] : [],
-      {
-        dealer: this.scoreCards.afterNextCardPlayed(),
-        player1: this.player1.onTurnScored(this.result.player1Score),
-        player2: this.player2.onTurnScored(this.result.player2Score)
-      }
+      this.player1.onTurnScored(this.result.player1Score),
+      this.player2.onTurnScored(this.result.player2Score)
     )
   }
 }
