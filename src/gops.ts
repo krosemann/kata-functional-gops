@@ -1,5 +1,5 @@
-import { Card, Cards } from './cards'
-import { EqualPlayer, RandomPlayer } from './players'
+import { Card, SequenceOfCards } from './sequenceOfCards'
+import { Player } from "./players";
 
 /** GOPS Game -- https://playingcarddecks.com/blogs/how-to-play/gops-game-rules */
 export class GopsGame {
@@ -8,10 +8,9 @@ export class GopsGame {
   private revealedCards: Card[] = []
 
   constructor(
-    setOfCards: Card[],
-    private readonly scoreCards = new Cards(setOfCards),
-    private readonly player1 = new RandomPlayer(new Cards(setOfCards)),
-    private readonly player2 = new EqualPlayer(new Cards(setOfCards)),
+    private readonly scoreCards: SequenceOfCards,
+    private readonly player1: Player,
+    private readonly player2: Player,
   ) {
   }
 

@@ -1,6 +1,9 @@
-export class Cards {
+export class SequenceOfCards {
 
-  constructor(private readonly cards: Card[]) {
+  private readonly cards: Card[]
+
+  constructor(setOfCards: Card[]) {
+    this.cards = [...setOfCards]
   }
 
   popRandomCard(): Card {

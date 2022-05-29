@@ -1,5 +1,7 @@
 import { GopsGame } from './gops'
-import { Card } from "./cards";
+import { Card, SequenceOfCards } from "./sequenceOfCards";
+import { EqualPlayer, RandomPlayer } from "./players";
+import { randomSequenceOfCards } from "./randomSequenceOfCards";
 
 const setOfCards: Card[] = [
   new Card('A', 1),
@@ -17,4 +19,8 @@ const setOfCards: Card[] = [
   new Card('K', 13)
 ]
 
-new GopsGame(setOfCards).play()
+new GopsGame(
+  new SequenceOfCards(randomSequenceOfCards(setOfCards)),
+  new RandomPlayer(new SequenceOfCards(setOfCards)),
+  new EqualPlayer(new SequenceOfCards(setOfCards))
+).play()

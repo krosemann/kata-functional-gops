@@ -1,10 +1,10 @@
-import { Card, Cards } from './cards'
+import { Card, SequenceOfCards } from './sequenceOfCards'
 
 export abstract class Player {
 
   private score = 0
 
-  constructor(protected readonly cards: Cards) {
+  constructor(protected readonly cards: SequenceOfCards) {
   }
 
   scorePoint(value: number) {
