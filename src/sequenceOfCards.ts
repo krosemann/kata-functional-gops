@@ -7,7 +7,7 @@ export class SequenceOfCards {
   }
 
   nextCard(): Card {
-    if(!this.hasCards()) throw new Error('sequence has no cards left')
+    if(this.cards.length === 0) throw new Error('sequence has no cards left')
     return this.cards[0] as Card
   }
 
@@ -15,8 +15,8 @@ export class SequenceOfCards {
     return new SequenceOfCards(this.cards.filter((_, index) => index !== 0))
   }
 
-  hasCards(): boolean {
-    return this.cards.length > 0
+  hasNextCard(): boolean {
+    return this.cards.length > 1
   }
 }
 

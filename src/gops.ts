@@ -20,8 +20,8 @@ export class GopsGame {
   }
 
   play() {
-    while (this.turn.hasNextTurn()) {
-      this.turn = this.turn.play()
+    while (this.turn.hasNextTurn) {
+      this.turn = this.turn.nextTurn()
       this.showPlayerScores()
     }
 

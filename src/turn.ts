@@ -1,6 +1,12 @@
 import { Card, SequenceOfCards } from "./sequenceOfCards";
 import { Player } from "./player";
 
+interface Hands {
+  readonly dealer: SequenceOfCards
+  readonly player1: Player
+  readonly player2: Player
+}
+
 export class Turn {
 
   readonly scoreCards: SequenceOfCards
@@ -13,53 +19,69 @@ export class Turn {
     this.player2 = hands.player2
   }
 
+  get hasNextTurn(): boolean {
+    return this.scoreCards.hasNextCard()
+  }
+
   get currentCard(): Card {
     return this.scoreCards.nextCard()
   }
 
-  play(): Turn {
-    console.log(`Turn ${this.turnNumber} with bounty:`, this.currentCard)
+  get player1Card(): Card {
+    return this.player1.nextCard()
+  }
 
-    const card1 = this.player1.nextCard()
-    const card2 = this.player2.nextCard()
-    console.log('Player\'s bet:', card1, 'vs', card2)
-
-    const winner = Turn.winner(card1, card2)
-
-    return new Turn(
-      this.turnNumber + 1,
-      winner === "DRAW" ? [...this.revealedCards, this.currentCard] : [],
-      {
-        dealer: this.scoreCards.afterNextCardPlayed(),
-        player1: this.player1.onTurnScored(winner === 'PLAYER_1_WON' ? this.score : 0),
-        player2: this.player2.onTurnScored(winner === 'PLAYER_2_WON' ? this.score : 0)
-      }
-    )
+  get player2Card(): Card {
+    return this.player2.nextCard()
   }
 
   get score(): number {
     return this.revealedCards
       .map(it => it.value)
-      .reduce((aggregate, value) => aggregate + value, this.currentCard.value)
+      .reduce(
+        (aggregate, value) => aggregate + value,
+        this.currentCard.value
+      )
   }
 
-  hasNextTurn(): boolean {
-    return this.scoreCards.hasCards()
+  get result(): TurnResult {
+    return new TurnResult(this.score, this.player1Card, this.player2Card)
   }
 
-  private static winner(card1: Card, card2: Card): TurnResult {
-    return card1.isHigherRankedThan(card2)
+  nextTurn(): Turn {
+    return new Turn(
+      this.turnNumber + 1,
+      this.result.outcome === "DRAW" ? [...this.revealedCards, this.currentCard] : [],
+      {
+        dealer: this.scoreCards.afterNextCardPlayed(),
+        player1: this.player1.onTurnScored(this.result.player1Score),
+        player2: this.player2.onTurnScored(this.result.player2Score)
+      }
+    )
+  }
+}
+
+class TurnResult {
+
+  constructor(
+    private readonly score: number,
+    private readonly card1: Card,
+    private readonly card2: Card) {
+  }
+
+  get outcome(): 'PLAYER_1_WON' | 'PLAYER_2_WON' | 'DRAW' {
+    return this.card1.isHigherRankedThan(this.card2)
       ? 'PLAYER_1_WON'
-      : card2.isHigherRankedThan(card1)
+      : this.card2.isHigherRankedThan(this.card1)
         ? "PLAYER_2_WON"
         : 'DRAW'
   }
-}
 
-interface Hands {
-  readonly dealer: SequenceOfCards
-  readonly player1: Player
-  readonly player2: Player
-}
+  get player1Score(): number {
+    return this.outcome === 'PLAYER_1_WON' ? this.score : 0
+  }
 
-type TurnResult = 'PLAYER_1_WON' | 'PLAYER_2_WON' | 'DRAW'
+  get player2Score(): number {
+    return this.outcome === 'PLAYER_2_WON' ? this.score : 0
+  }
+}
