@@ -1,11 +1,29 @@
 import { Card, SequenceOfCards } from "./sequenceOfCards";
 import { Player } from "./player";
 
+export class Turns {
+  constructor(readonly all: Turn[]) {
+  }
+
+  get lastPlayedTurn(): Turn {
+    if(this.all.length === 0) throw Error('no turn has been played yet')
+    return this.all[this.all.length - 1] as Turn
+  }
+
+  get hasNextTurn() {
+    return this.lastPlayedTurn.hasNextTurn
+  }
+
+  playNext(): Turns {
+    return new Turns([...this.all, this.lastPlayedTurn.nextTurn()])
+  }
+}
+
 export class Turn {
 
   constructor(
     readonly turnNumber: number,
-    readonly scoreCards: SequenceOfCards,
+    private readonly scoreCards: SequenceOfCards,
     readonly revealedCards: Card[],
     readonly player1: Player,
     readonly player2: Player) {

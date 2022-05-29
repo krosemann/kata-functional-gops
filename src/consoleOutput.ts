@@ -1,15 +1,8 @@
-import { Turn } from "./turn";
+import { Turn, Turns } from "./turn";
 
-export function outputTurns(turns: Turn[]) {
-  turns.forEach(it => outputTurn(it))
-
-  const lastTurn = turns[turns.length - 1]
-
-  if ((lastTurn?.result.player1Score ?? 0) > (lastTurn?.result.player2Score ?? 0)) {
-    console.log('Player 1 wins!')
-  } else {
-    console.log('Player 2 wins!')
-  } // there is no tie with 91 total points
+export function outputTurns(turns: Turns) {
+  turns.all.forEach(it => outputTurn(it))
+  outputFinalOutcome(turns.lastPlayedTurn)
 }
 
 function outputTurn(turn: Turn) {
@@ -18,4 +11,12 @@ function outputTurn(turn: Turn) {
   console.log('Player\'s bet:', turn.player1.nextCard(), 'vs', turn.player2.nextCard())
   console.log(`Scores: ${(turn.result.player1Score)} vs ${(turn.result.player2Score)}`)
   console.log()
+}
+
+function outputFinalOutcome(finalTurn: Turn) {
+  if (finalTurn.result.player1Score > finalTurn.result.player2Score) {
+    console.log('Player 1 wins!')
+  } else {
+    console.log('Player 2 wins!')
+  } // there is no tie with 91 total points
 }
