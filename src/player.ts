@@ -2,7 +2,7 @@ import { Card, SequenceOfCards } from './sequenceOfCards'
 
 export class Player {
 
-  constructor(readonly score: number, private readonly cards: SequenceOfCards) {
+  constructor(private readonly cards: SequenceOfCards, readonly score: number = 0) {
   }
 
   get currentCard(): Card {
@@ -10,7 +10,7 @@ export class Player {
   }
 
   turnScored(newScore: number): Player {
-    return new Player(newScore, this.cards.currentCardPlayed())
+    return new Player(this.cards.currentCardPlayed(), newScore)
   }
 
   hasHigherRankedCardThan(otherPlayer: Player) {

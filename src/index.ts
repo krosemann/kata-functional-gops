@@ -27,8 +27,8 @@ const randomPlayerSequence = randomSequenceOfCards(setOfCards)
 // Play
 const playedTurns = new GopsGame(
   dealerSequence,
-  new Player(0, randomPlayerSequence),
-  new Player(0, dealerSequence)
+  new Player(randomPlayerSequence),
+  new Player(dealerSequence)
 ).play()
 
 // Print
