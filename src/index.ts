@@ -2,6 +2,8 @@ import { GopsGame } from './gops'
 import { Card } from "./sequenceOfCards";
 import { Player } from "./player";
 import { randomSequenceOfCards } from "./randomSequenceOfCards";
+import { outputTurns } from "./consoleOutput";
+import { Turn } from "./turn";
 
 const setOfCards: Card[] = [
   new Card('A', 1),
@@ -22,8 +24,25 @@ const setOfCards: Card[] = [
 const dealerSequence = randomSequenceOfCards(setOfCards)
 const randomPlayerSequence = randomSequenceOfCards(setOfCards)
 
-new GopsGame(
+// Play
+const playedTurns = new GopsGame(
   dealerSequence,
   new Player(0, randomPlayerSequence),
   new Player(0, dealerSequence)
 ).play()
+
+// Print
+outputTurns(playedTurns)
+
+// Assert valid end
+assertValidEndOfGame(playedTurns)
+
+function assertValidEndOfGame(playedTurns: Turn[]) {
+  const lastTurn = playedTurns[playedTurns.length - 1]
+
+  console.assert(lastTurn?.turnNumber === 13, '13 cards where played')
+
+  console.assert(lastTurn?.revealedCards.length === 0, 'no more revealed cards')
+
+  console.assert((lastTurn?.result.player1Score ?? 0) + (lastTurn?.result.player2Score ?? 0) === 91, 'all score cards add up to 91')
+}

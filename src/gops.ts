@@ -5,14 +5,14 @@ import { Turn } from "./turn";
 /** GOPS Game -- https://playingcarddecks.com/blogs/how-to-play/gops-game-rules */
 export class GopsGame {
 
-  private turn: Turn
+  private readonly firstTurn: Turn
 
   constructor(
     scoreCards: SequenceOfCards,
     player1: Player,
     player2: Player,
   ) {
-    this.turn = new Turn(
+    this.firstTurn = new Turn(
       1,
       scoreCards,
       [],
@@ -21,31 +21,15 @@ export class GopsGame {
     )
   }
 
-  play() {
-    while (this.turn.hasNextTurn) {
-      this.turn = this.turn.nextTurn()
-      this.showPlayerScores()
-    }
-
-    if (this.turn.player1.score > this.turn.player2.score) {
-      console.log('Player 1 wins!')
-    } else {
-      console.log('Player 2 wins!')
-    } // there is no tie with 91 total points
-
-    this.assertValidEndOfGame()
+  play(): Turn[] {
+    return this.nextTurn([this.firstTurn])
   }
 
-  private showPlayerScores() {
-    console.log(`Scores: ${(this.turn.player1.score)} vs ${(this.turn.player2.score)}`)
-    console.log()
-  }
-
-  private assertValidEndOfGame() {
-    console.assert(this.turn.turnNumber === 13, '13 cards where played')
-
-    console.assert(this.turn.revealedCards.length === 0, 'no more revealed cards')
-
-    console.assert(this.turn.result.player1Score + this.turn.result.player2Score === 91, 'all score cards add up to 91')
+  private nextTurn(turns: Turn[]): Turn[] {
+    const lastTurn = turns[turns.length - 1]
+    if(lastTurn?.hasNextTurn)
+      return this.nextTurn([...turns, lastTurn.nextTurn()])
+    else
+      return turns
   }
 }
