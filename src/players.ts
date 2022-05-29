@@ -4,10 +4,7 @@ export abstract class Player {
 
   private score = 0
 
-  constructor(
-    denominations: string[],
-    protected readonly cards: Cards = new Cards(denominations)
-  ) {
+  constructor(protected readonly cards: Cards) {
   }
 
   scorePoint(value: number) {
