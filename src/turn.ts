@@ -24,7 +24,7 @@ export class Turn {
   constructor(
     readonly turnNumber: number,
     private readonly scoreCards: SequenceOfCards,
-    readonly revealedCards: Card[],
+    readonly previouslyRevealedCards: Card[],
     readonly player1: Player,
     readonly player2: Player) {
   }
@@ -38,7 +38,7 @@ export class Turn {
   }
 
   get score(): number {
-    return this.revealedCards
+    return this.previouslyRevealedCards
       .map(it => it.value)
       .reduce(
         (aggregate, value) => aggregate + value,
@@ -54,7 +54,7 @@ export class Turn {
     return new Turn(
       this.turnNumber + 1,
       this.scoreCards.currentCardPlayed(),
-      this.result.outcome === "DRAW" ? [...this.revealedCards, this.currentCard] : [],
+      this.result.outcome === "DRAW" ? [...this.previouslyRevealedCards, this.currentCard] : [],
       this.player1.turnScored(this.result.player1Score),
       this.player2.turnScored(this.result.player2Score)
     )
