@@ -70,9 +70,9 @@ class TurnResult {
   }
 
   get outcome(): 'PLAYER_1_WON' | 'PLAYER_2_WON' | 'DRAW' {
-    return this.player1.currentCard.isHigherRankedThan(this.player2.currentCard)
+    return this.player1.hasHigherRankedCardThan(this.player2)
       ? 'PLAYER_1_WON'
-      : this.player2.currentCard.isHigherRankedThan(this.player1.currentCard)
+      : this.player2.hasHigherRankedCardThan(this.player1)
         ? "PLAYER_2_WON"
         : 'DRAW'
   }

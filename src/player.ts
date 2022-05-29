@@ -12,4 +12,8 @@ export class Player {
   turnScored(newScore: number): Player {
     return new Player(newScore, this.cards.currentCardPlayed())
   }
+
+  hasHigherRankedCardThan(otherPlayer: Player) {
+    return this.currentCard.isHigherRankedThan(otherPlayer.currentCard)
+  }
 }
