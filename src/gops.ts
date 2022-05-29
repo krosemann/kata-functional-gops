@@ -8,10 +8,10 @@ export class GopsGame {
   private revealedCards: Card[] = []
 
   constructor(
-    denominations: string[],
-    private readonly scoreCards = new Cards(denominations),
-    private readonly player1 = new RandomPlayer(new Cards(denominations)),
-    private readonly player2 = new EqualPlayer(new Cards(denominations)),
+    setOfCards: Card[],
+    private readonly scoreCards = new Cards(setOfCards),
+    private readonly player1 = new RandomPlayer(new Cards(setOfCards)),
+    private readonly player2 = new EqualPlayer(new Cards(setOfCards)),
   ) {
   }
 

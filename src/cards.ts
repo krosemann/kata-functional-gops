@@ -1,9 +1,6 @@
 export class Cards {
 
-  private readonly cards: Card[]
-
-  constructor(denominations: string[]) {
-    this.cards = denominations.map((d, index) => new Card(d, index+1))
+  constructor(private readonly cards: Card[]) {
   }
 
   popRandomCard(): Card {
